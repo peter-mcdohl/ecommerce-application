@@ -88,10 +88,11 @@ public class Cart {
 		if(items == null) {
 			items = new ArrayList<>();
 		}
-		items.remove(item);
-		if(total == null) {
+		if (total == null) {
 			total = new BigDecimal(0);
 		}
-		total = total.subtract(item.getPrice());
+		if (items.remove(item)) {
+			total = total.subtract(item.getPrice());
+		}
 	}
 }
