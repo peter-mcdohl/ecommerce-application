@@ -70,4 +70,33 @@ public class UserControllerTest {
         responseEntity = userController.createUser(requestData);
         assertEquals(400, responseEntity.getStatusCodeValue());
     }
+
+    private User getUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("test");
+        return user;
+    }
+
+    @Test
+    public void findById() {
+        ResponseEntity<User> responseEntity = userController.findById(1L);
+        assertEquals(404, responseEntity.getStatusCodeValue());
+
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(getUser()));
+        responseEntity = userController.findById(1L);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertNotNull(responseEntity.getBody());
+    }
+
+    @Test
+    public void findByUsername() {
+        ResponseEntity<User> responseEntity = userController.findByUserName("test");
+        assertEquals(404, responseEntity.getStatusCodeValue());
+
+        when(userRepository.findByUsername("test")).thenReturn(getUser());
+        responseEntity = userController.findByUserName("test");
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertNotNull(responseEntity.getBody());
+    }
 }
